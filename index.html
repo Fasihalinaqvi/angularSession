@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Angular | Prac</title>
+	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
+</head>
+<body>
+
+	<div ng-app="myFirstApp">
+		<div ng-controller="myFirstCtrl">
+			<h1>hit Angular</h1>
+		    <h1 ng-click="toggleValue()">{{script}}</h1>
+		</div>
+
+		<div ng-controller="countriesCtrl"> 
+
+			<select>
+				<option ng-repeat="x in countriesNames">
+				    {{ x.Country }}
+				</option>
+			</select>
+
+		</div>
+	</div>
+
+	<script>
+	var app = angular.module('myFirstApp', [] );
+
+	app.controller('countriesCtrl', function($scope, $http) {
+	  	$http.get("https://api.myjson.com/bins/1go01j").then(function (response) {
+	  		console.log(response)
+	      	$scope.countriesNames = response.data.records;
+	  	});
+	});
+
+	app.controller('myFirstCtrl', function($scope) {
+	    $scope.script = "Angular";
+	    $scope.toggleValue = function() {
+	    	if($scope.script == "React"){
+	           	$scope.script = "Angular";
+	        } else{
+	        	$scope.script = "React";
+	        }
+	        
+	    }
+	});
+	</script>
+	<!-- <script src="./app/controllers/toggle.js"></script> -->
+	<!-- <script src="./app/controllers/countries.js"></script> -->
+</body>
+</html>
