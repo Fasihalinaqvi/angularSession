@@ -36,7 +36,7 @@
 	app.controller('myFirstCtrl', function($scope) {
 	    $scope.script = "Angular";
 	    $scope.toggleValue = function() {
-	    	if($scope.script == "React"){
+	    	if($scope.script === "React"){
 	           	$scope.script = "Angular";
 	        } else{
 	        	$scope.script = "React";
