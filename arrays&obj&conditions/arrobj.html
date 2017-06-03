@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="description" content="A fully featured admin theme which can be used to build CRM, CMS, etc.">
+        <meta name="author" content="Coderthemes">
+
+        <!-- App Favicon -->
+        <link rel="shortcut icon" href="assets/images/favicon.ico">
+
+        <title>Object Arrays Aand Conditions </title>
+
+      
+        <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+        <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
+        <style>
+            .text-warning{
+                font-size: 20px;
+                color: orange;
+            }
+            .content{
+                margin-top: 10px;
+            }
+        </style>
+    </head>
+
+
+    <body class="fixed-left">
+
+        <!-- Begin page -->
+        <div id="wrapper">
+
+            
+
+
+            <!-- Start right Content here -->
+          
+            <div class="content-page">
+                <!-- Start content -->
+                <div class="content">
+                    <div class="container">
+
+                        <div class="row">
+                            <div class="col-md-2 col-md-offset-5">
+                                <button class="nextBtn btn btn-success">click Here To start</button>
+                            </div>
+                            <div class=" col-md-12">
+                                <div class="row">
+                                    <div class="col-md-1 prevMonthBtn"> 
+                                        <button class="btn prevBtn btn-icon btn-success" type="button" disabled> 
+                                            <i class="fa fa-arrow-circle-left fa-2x" aria-hidden="true"></i> 
+                                        </button>
+                                        <h2 id="prevYear" class="text-warning header-title">Previous</h2> 
+                                    </div>
+                                    <div class="col-md-10">
+                                        <div class="card-box card-tabs">
+                                            <ul id="monthName" class="nav nav-pills pull-right">
+                                                
+                                                
+                                            </ul>
+                                            <h2 id="currentYear" class="  m-b-30 yearhead text-custom"></h2>
+
+                                            
+                                        </div>
+                                    </div>
+                                    <div class="col-md-1 nextMonthBtn">
+                                        
+                                    </div>
+                                </div>
+                                
+                            </div>
+                            
+                        </div>
+                        <!-- end row -->
+                    </div> <!-- container -->
+
+                </div> <!-- content -->
+            </div>
+
+
+            <!-- ============================================================== -->
+            <!-- End Right content here -->
+            <!-- ============================================================== -->
+
+
+        </div>
+        <!-- END wrapper -->
+
+
+
+        <!-- jQuery  -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+ 
+        <script type="text/javascript">
+            
+
+
+            $(document).on("click", ".slots_pp", function(){
+                $(".slots_pp").removeClass("slots_pp_check");
+                $(this).addClass("slots_pp_check");
+            });
+
+          
+    
+
+            jQuery(document).on("click", '.nextBtn', function(){
+                jQuery(this).prop("disabled", true);
+                $.ajax({
+                    url: "./months.json",
+                    success: function(data) {
+                        // console.log('data>>>>>>>>>>>',data); 
+                        // for (var key in data) {       
+                        //     console.log(key + ' : ' + data[key]);
+                            
+                        //     console.log('JUSTkey>>>>>>>',key)
+                        // }
+                        var years = '';
+                        var months = '';
+                        var yearArr = [];
+                        var monthArr = [];
+                        // console.log(monthArr)
+                        jQuery.each(data, function(key, value){ 
+                            yearArr.push(key ); 
+                            monthArr.push(value );  
+                        });
+                        years = "<span class='head mainYear' data-year='"+yearArr[0]+"'>"+ yearArr[0]+"</span>";
+                        jQuery("#currentYear").html(years);
+
+                        var nextbtn = '<button class="btn btn-icon nexChanger btn-success" data-id='+1+' type="button"> <i class="fa fa-arrow-circle-right fa-2x" aria-hidden="true"></i> </button><h2 id="nexYear" class="text-warning yearhead  header-title">' + yearArr[1]+ '</h2>';
+                        jQuery('.nextMonthBtn').html(nextbtn)
+
+
+                        jQuery.each(monthArr[0], function(index, value){
+                            // console.log('valuevaluevaluevalue>>>>',value);
+                             months += "<li class='active ' data-months='"+value+"'> <a href='#cardpills-1' data-toggle='tab' aria-expanded='true'>"+ value+"</a> </li>";
+                        });
+                        jQuery("#monthName").html(months);
+
+                        var yearIncIndex 
+                        // var monthInc = monthArr[0]
+                        var yearDecIndex = 0;
+                        jQuery(document).on('click', '.nextMonthBtn' ,function(){ 
+                            yearIncIndex = yearDecIndex
+                            if (jQuery('.nexChanger').attr('disabled')) {
+                                return false;
+                            } else{
+                                yearIncIndex++
+                            }
+                            if (yearArr.length > yearIncIndex ) {
+                                years = "<span class='head mainYear' data-year='"+yearArr[yearIncIndex]+"'>"+ yearArr[yearIncIndex]+"</span>";
+                                jQuery("#currentYear").html(years);
+
+
+                                var incrementingNex = yearArr[yearIncIndex +1]
+                                var decremrntingNex = yearArr[yearIncIndex -1]
+                                
+                                if (yearIncIndex +1 == yearArr.length) {
+                                    jQuery('#nexYear').html('End');  
+                                    jQuery('#prevYear').html(decremrntingNex);
+                                }else{
+                                    jQuery('#nexYear').html(incrementingNex);  
+                                    jQuery('#prevYear').html(decremrntingNex);
+                                }
+
+
+                                // jQuery('#nexYear').html(yearArr[yearIncIndex +1]);
+                                // jQuery('#prevYear').html(yearArr[yearIncIndex -1]);
+
+                                console.log('yearArr[yearIncIndex]yearArr', yearIncIndex +1)
+                                
+                                months = ' ';
+                                jQuery.each(monthArr[yearIncIndex], function(index, value){
+                                    // console.log('valuevaluevaluevalue>>>>',value);
+                                     months += "<li class='active ' data-months='"+value+"'> <a href='#cardpills-1' data-toggle='tab' aria-expanded='true'>"+ value+"</a> </li>";
+                                }); 
+                                
+                                jQuery("#monthName").html(months);
+                                jQuery('.prevBtn').removeAttr('disabled')
+                                if (yearIncIndex == yearArr.length-1) {
+                                    jQuery('.nexChanger').prop("disabled", true);
+
+                                }
+                            }
+                            yearDecIndex = yearIncIndex
+                        });
+                        
+                        jQuery(document).on('click', '.prevMonthBtn' ,function(){ 
+                            if (jQuery('.prevBtn').attr('disabled')) {
+                                return false;
+                            } else{
+                                yearDecIndex--
+                            }
+                            
+                            if (yearArr.length > yearDecIndex ) {
+                                years = "<span class='head mainYear'  data-year='"+yearArr[yearDecIndex]+"'>"+ yearArr[yearDecIndex]+"</span>";
+                                jQuery("#currentYear").html(years);
+                                jQuery('.nexChanger').removeAttr('disabled');
+                                var incrementingPre = yearArr[yearDecIndex +1]
+                                var decremrntingPre = yearArr[yearDecIndex -1]
+                                
+                                if (yearDecIndex == 0) {
+                                    jQuery('#prevYear').html('Start');
+                                    jQuery('#nexYear').html(incrementingPre);  
+                                }else{
+
+                                    jQuery('#nexYear').html(incrementingPre);  
+                                    jQuery('#prevYear').html(decremrntingPre);
+                                }
+                                months = ' ';
+                                jQuery.each(monthArr[yearDecIndex], function(index, value){
+                                    // console.log('valuevaluevaluevalue>>>>',value);
+                                     months += "<li class='active ' data-months='"+value+"'> <a href='#cardpills-1' data-toggle='tab' aria-expanded='true'>"+ value+"</a> </li>";
+                                });
+                                jQuery("#monthName").html(months);
+
+                                if ( yearDecIndex  == 0) {
+                                    jQuery('.prevBtn').prop("disabled", true);
+
+                                }
+
+                            }
+                        });
+                    },
+                    error: function(){
+                        alert("error");
+                    }
+                }); 
+            });
+        </script>
+    </body>
+</html>
